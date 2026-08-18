@@ -154,9 +154,37 @@ line. A profile path also works: `--cookies-from-browser firefox:/path/to/profil
 | --- | --- |
 | `ytmp3.py` | Downloader core + CLI |
 | `gui.py` | Local web server for the GUI |
+| `mechenformat.py` | Tidy an existing MP3 for a hardware player |
 | `ui.html` | The GUI page (Kokka-branded markup) |
 | `assets/` | Brand tokens, logo, favicon |
 | `requirements.txt` | yt-dlp + mutagen |
+
+## Fixing up a file you already have
+
+`mechenformat.py` normalises an MP3 that is already on disk — handy for a
+single that came from somewhere else, or one whose art is too big for a
+hardware player like a MECHEN.
+
+```bash
+python3 mechenformat.py "some file.mp3"
+```
+
+It renames the file after its ID3 title and rewrites the embedded cover as a
+centre-cropped square JPEG of at most 640x640. Nothing else is touched, and a
+file that is already correct is left alone rather than re-encoded.
+
+| Flag | Effect |
+| --- | --- |
+| `-n` | Dry run — show what would change, write nothing |
+| `-a` | Name the file `Artist - Title.mp3` rather than `Title.mp3` |
+| `-s N` | Use an edge length other than 640 |
+| `-e` | Upscale art smaller than the target instead of leaving it be |
+
+Several files at once is fine: `python3 mechenformat.py ~/Music/*.mp3`.
+
+> It names files from the **title tag alone**, so running it across an album
+> folder strips the `01 - ` prefixes and loses the running order in the
+> filenames. It is meant for singles; leave album folders to `ytmp3.py`.
 
 ## Branding
 
