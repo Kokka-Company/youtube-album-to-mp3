@@ -22,9 +22,14 @@ Runs on **Python 3**. Kokka & Company branded.
   so the folder itself decides what's done. Delete an MP3 and re-run: it comes
   back.
 - **Parallel downloads**, failures skipped rather than aborting the run
-- **Automatic retry** — YouTube intermittently returns `403 Forbidden` on an audio
-  stream. Each track is retried up to four times across different formats with a
-  growing pause between attempts, which clears nearly all of them.
+- **Automatic retry** — transient failures are retried across four different
+  formats with a growing pause between attempts.
+- **Handles YouTube's sign-in wall** — YouTube increasingly refuses anonymous
+  audio downloads, handing back a media URL it then serves `403 Forbidden` on.
+  The tool recognises this and immediately retries with your browser's cookies
+  instead of working through the format ladder for nothing. It also solves
+  YouTube's obfuscated `n` parameter, without which the returned URLs 403 on
+  any sustained read.
 
 ## Setup
 
@@ -188,7 +193,7 @@ cp $SRC/logos/favicon/favicon.ico             assets/
 | `yt-dlp is not installed` | `pip3 install --user -r requirements.txt` |
 | `ffmpeg not found` | `sudo apt install ffmpeg`, or set `FFMPEG_PATH` |
 | Extractor errors after a YouTube change | `pip3 install --user -U yt-dlp` — this fixes most breakage |
-| `403 Forbidden` on every format | YouTube is refusing anonymous downloads from your IP; sign in with `--cookies-from-browser <browser>` |
+| `403 Forbidden` on every format | YouTube is refusing anonymous downloads. The tool now detects this and retries with your browser's cookies automatically; if no browser is found, pass `--cookies-from-browser firefox` |
 | Private / members-only playlist | `--cookies-from-browser <browser>` |
 | `failed to load cookies` | The browser isn't installed, or its profile is locked — close the browser first, or export a `cookies.txt` and use `--cookies` |
 | `Sign in to confirm you're not a bot` | Handled automatically; if it persists, sign in to YouTube in your browser first |

@@ -422,6 +422,21 @@ def is_bot_check(message):
     return "not a bot" in text or "sign in to confirm" in text
 
 
+def is_forbidden_media(message):
+    """True when YouTube hands back a media URL it then refuses to serve.
+
+    The tell is a 403 on the media fetch (or a format list stripped back to
+    thumbnails) *after* extraction succeeded. It means the request lacked a
+    signed-in session, and no amount of retrying the same way will fix it.
+    """
+    text = str(message).lower()
+    return (
+        "http error 403" in text
+        or "only images are available" in text
+        or "requested format is not available" in text
+    )
+
+
 def auto_enable_cookies(args):
     """On a bot check, fall back to whatever browser is installed. Returns its name."""
     with cookie_lock:
@@ -459,6 +474,10 @@ def build_ydl_opts(args, track_dir, video_id, fmt="bestaudio/best"):
         "extractor_retries": 3,
         "socket_timeout": 30,
         "prefer_ffmpeg": True,
+        # YouTube obfuscates a URL parameter ("n") behind a JS challenge.
+        # Unsolved, it still returns media URLs — they just 403 on any
+        # sustained read. Solving it needs yt-dlp's downloadable solver.
+        "remote_components": ["ejs:github"],
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
@@ -489,6 +508,7 @@ def probe(url, args):
         "no_warnings": True,
         "logger": QuietLogger(),
         "extract_flat": "in_playlist",
+        "remote_components": ["ejs:github"],
         "ignoreerrors": True,
         "socket_timeout": 30,
     }
@@ -553,21 +573,28 @@ def download_one(entry, index, total, args, out_dir, work_dir, playlist_title,
             last_error = str(exc)
             if CANCEL.is_set():
                 return {"status": "cancelled", "title": label}
-            if is_bot_check(last_error):
+            if is_bot_check(last_error) or is_forbidden_media(last_error):
                 # YouTube wants a signed-in session. Remaining attempts reuse
                 # the browser's cookies, which usually clears it outright.
                 browser = auto_enable_cookies(args)
                 if browser:
-                    log(f"[{index}/{total}] YouTube asked for sign-in — "
-                        f"retrying with {browser} cookies ...")
-                    continue
+                    log(f"[{index}/{total}] YouTube refused an anonymous "
+                        f"download — retrying with {browser} cookies ...")
+                    continue  # the next try differs, so a pause buys nothing
+                # Cookies were already in play and it still refused. Every
+                # remaining format is served the same way, so the ladder below
+                # would only burn its backoff before failing identically.
+                # Genuinely transient 403s are already absorbed by the
+                # retries/fragment_retries yt-dlp applies inside each attempt.
                 last_error = (
-                    "YouTube requires a signed-in session for this track. "
-                    "Set 'Sign-in cookies from browser' (e.g. firefox) and retry."
+                    "YouTube refused to serve the audio for this track. It "
+                    "wants a signed-in session: set 'Sign-in cookies from "
+                    "browser' (e.g. firefox) and retry."
                 )
+                break
             if attempt < len(FORMAT_FALLBACKS):
-                # 403s here are usually transient throttling; pausing before the
-                # next attempt clears them far more often than retrying at once.
+                # Other failures are often transient; pausing before the next
+                # attempt clears them far more often than retrying at once.
                 log(f"[{index}/{total}] retrying {label} in {backoff}s ...")
                 time.sleep(backoff)
 
