@@ -4,7 +4,7 @@ Downloads a YouTube playlist (or a single video) as MP3 files with full ID3 tags
 and square album art embedded — the same output shape as ytdlp.online's playlist
 downloader, but local, scriptable and resumable.
 
-Runs on **Node.js**. Kokka & Company branded.
+Runs on **Python 3**. Kokka & Company branded.
 
 ## What you get
 
@@ -28,36 +28,28 @@ Runs on **Node.js**. Kokka & Company branded.
 
 ## Setup
 
-Requires **Node.js 18+**, plus two binaries: `yt-dlp` and `ffmpeg`.
+Requires **Python 3.9+** and `ffmpeg`.
 
 ```bash
-npm install                      # installs node-id3
-sudo apt install ffmpeg          # if you don't have it
+pip3 install --user -r requirements.txt   # yt-dlp + mutagen
+sudo apt install ffmpeg                   # if you don't have it
 ```
 
-For yt-dlp, either is fine:
+yt-dlp is imported as a library rather than shelled out to, so there is no
+separate binary to install or keep on your `PATH` — `pip install -U yt-dlp` is
+all an update takes. ffmpeg is a native binary; the tool finds it on your
+`PATH`, or set `FFMPEG_PATH=/path/to/ffmpeg` to point at a specific build.
 
-```bash
-pipx install yt-dlp                                   # or: pip3 install --user yt-dlp
-# ...or grab the standalone binary (no Python on your system at all):
-#   https://github.com/yt-dlp/yt-dlp/releases  -> yt-dlp_linux
-```
-
-The tool looks for `yt-dlp` on your `PATH`, then `~/.local/bin/yt-dlp`,
-`/usr/local/bin`, `/usr/bin`. Override with `YTDLP_PATH=/path/to/yt-dlp`
-(and `FFMPEG_PATH` likewise).
-
-> **A note on "no Python":** all of *this* project's code is Node. yt-dlp itself
-> is a Python program, and it is the reason this tool survives YouTube's
-> constant changes — no JavaScript extractor comes close on reliability. If you
-> want Python off the machine entirely, use the `yt-dlp_linux` standalone build,
-> which bundles its own runtime and needs no system Python. ffmpeg is a native
-> binary either way.
+> **Why Python:** yt-dlp is itself a Python program, and it is the reason this
+> tool survives YouTube's constant changes — no JavaScript extractor comes
+> close on reliability. Sharing its runtime means one language on the machine
+> instead of two, and lets the downloader use yt-dlp's API directly (structured
+> metadata and progress callbacks) instead of parsing another process's output.
 
 ## The easy way: the GUI
 
 ```bash
-npm start          # or: node gui.js
+python3 gui.py
 ```
 
 A tab opens in your browser. Paste the link, press **Download**, watch the
@@ -73,7 +65,7 @@ exposed to your network.
 Tick **"Just this one song"** in the GUI, or pass `--single`:
 
 ```bash
-node ytmp3.js "https://www.youtube.com/watch?v=..." --single
+python3 ytmp3.py "https://www.youtube.com/watch?v=..." --single
 ```
 
 This matters because a song link copied from YouTube usually still carries
@@ -87,7 +79,7 @@ video's own metadata. Add `--album "Singles"` if you'd rather file it in a folde
 ## The command line
 
 ```bash
-node ytmp3.js "https://www.youtube.com/playlist?list=PLxxxxxxxx"
+python3 ytmp3.py "https://www.youtube.com/playlist?list=PLxxxxxxxx"
 ```
 
 Files land in `downloads/<Album Name>/01 - Song.mp3`.
@@ -96,19 +88,19 @@ Files land in `downloads/<Album Name>/01 - Song.mp3`.
 
 ```bash
 # Pick an output folder and bitrate
-node ytmp3.js "<url>" -o ~/Music -b 320
+python3 ytmp3.py "<url>" -o ~/Music -b 320
 
 # Force the album and artist tags for a full album rip
-node ytmp3.js "<url>" --album "Kind of Blue" --artist "Miles Davis"
+python3 ytmp3.py "<url>" --album "Kind of Blue" --artist "Miles Davis"
 
 # Only tracks 1-5, four at a time
-node ytmp3.js "<url>" --items 1-5 -j 4
+python3 ytmp3.py "<url>" --items 1-5 -j 4
 
 # Age-restricted or private playlist — reuse your browser login
-node ytmp3.js "<url>" --cookies-from-browser firefox
+python3 ytmp3.py "<url>" --cookies-from-browser firefox
 
 # Everything in one folder, no track-number prefix
-node ytmp3.js "<url>" --flat --no-track-numbers
+python3 ytmp3.py "<url>" --flat --no-track-numbers
 ```
 
 ### All options
@@ -155,11 +147,11 @@ line. A profile path also works: `--cookies-from-browser firefox:/path/to/profil
 
 | File | Purpose |
 | --- | --- |
-| `ytmp3.js` | Downloader core + CLI |
-| `gui.js` | Local web server for the GUI |
+| `ytmp3.py` | Downloader core + CLI |
+| `gui.py` | Local web server for the GUI |
 | `ui.html` | The GUI page (Kokka-branded markup) |
 | `assets/` | Brand tokens, logo, favicon |
-| `legacy-python/` | The superseded Python implementation, kept for reference |
+| `requirements.txt` | yt-dlp + mutagen |
 
 ## Branding
 
@@ -193,9 +185,10 @@ cp $SRC/logos/favicon/favicon.ico             assets/
 
 | Problem | Fix |
 | --- | --- |
-| `yt-dlp not found` | `pipx install yt-dlp`, or set `YTDLP_PATH` |
-| `ffmpeg not found` | `sudo apt install ffmpeg` |
-| Extractor errors after a YouTube change | Update yt-dlp — this fixes most breakage |
+| `yt-dlp is not installed` | `pip3 install --user -r requirements.txt` |
+| `ffmpeg not found` | `sudo apt install ffmpeg`, or set `FFMPEG_PATH` |
+| Extractor errors after a YouTube change | `pip3 install --user -U yt-dlp` — this fixes most breakage |
+| `403 Forbidden` on every format | YouTube is refusing anonymous downloads from your IP; sign in with `--cookies-from-browser <browser>` |
 | Private / members-only playlist | `--cookies-from-browser <browser>` |
 | `failed to load cookies` | The browser isn't installed, or its profile is locked — close the browser first, or export a `cookies.txt` and use `--cookies` |
 | `Sign in to confirm you're not a bot` | Handled automatically; if it persists, sign in to YouTube in your browser first |

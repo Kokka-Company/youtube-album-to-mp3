@@ -13,6 +13,7 @@ See README.md for the full option list.
 """
 
 import argparse
+import os
 import re
 import shutil
 import subprocess
@@ -35,6 +36,14 @@ try:
     from mutagen.mp3 import MP3
 except ImportError:
     sys.exit("mutagen is not installed. Run: pip3 install --user -r requirements.txt")
+
+
+def find_ffmpeg():
+    """ffmpeg from $FFMPEG_PATH if set, else the first one on PATH."""
+    override = os.environ.get("FFMPEG_PATH")
+    if override and Path(override).is_file():
+        return override
+    return shutil.which("ffmpeg")
 
 
 ARCHIVE_NAME = ".downloaded.txt"
@@ -244,7 +253,7 @@ def prepare_cover(src, dest, square=True, max_size=MAX_ART_PX):
         vf.append("crop='min(iw,ih)':'min(iw,ih)'")
     vf.append(f"scale='min({max_size},iw)':'min({max_size},ih)':flags=lanczos")
     cmd = [
-        "ffmpeg", "-y", "-loglevel", "error",
+        find_ffmpeg() or "ffmpeg", "-y", "-loglevel", "error",
         "-i", str(src),
         "-vf", ",".join(vf),
         "-frames:v", "1", "-q:v", "2",
@@ -458,6 +467,10 @@ def build_ydl_opts(args, track_dir, video_id, fmt="bestaudio/best"):
             }
         ],
     }
+    # Keep yt-dlp on the same binary the cover crop uses.
+    ffmpeg = find_ffmpeg()
+    if ffmpeg:
+        opts["ffmpeg_location"] = ffmpeg
     if args.cookies:
         opts["cookiefile"] = args.cookies
     if args.cookies_from_browser:
@@ -682,8 +695,12 @@ def main(argv=None):
     global LAST_OUTPUT_DIR
     args = parse_args(argv or sys.argv[1:])
 
-    if not shutil.which("ffmpeg"):
-        sys.exit("ffmpeg not found on PATH. Install it: sudo apt install ffmpeg")
+    ffmpeg = find_ffmpeg()
+    if not ffmpeg:
+        sys.exit(
+            "ffmpeg not found on PATH. Install it: sudo apt install ffmpeg\n"
+            "(or point FFMPEG_PATH at the binary)"
+        )
 
     log(f"Reading {args.url} ...")
     try:
