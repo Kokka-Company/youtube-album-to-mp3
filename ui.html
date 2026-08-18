@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YouTube to MP3 — Kokka &amp; Company</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+__BRAND_CSS__
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--kokka-white); color:var(--kokka-gray-700);
+    font:15px/1.6 var(--kokka-font-sans);
+  }
+
+  /* Full-bleed brand-darker band against the white page below it — the
+     alternating section rhythm the brand uses instead of a dark mode. */
+  .masthead { background:var(--kokka-brand-darker); padding:20px 24px;
+              border-bottom:3px solid var(--kokka-brand-mid); }
+  .masthead-inner { max-width:820px; margin:0 auto; }
+  .masthead svg { width:232px; height:auto; display:block; }  /* min 200px per brand */
+
+  .wrap { max-width:820px; margin:0 auto; padding:40px 24px 64px; }
+
+  /* The signature eyebrow: small uppercase label above a Playfair heading.
+     Set in brand-dark, not brand-mid — brand-mid is 3.60 on white, which the
+     brand's own contrast table restricts to large text and borders. */
+  .eyebrow { font-size:12px; font-weight:600; text-transform:uppercase;
+             letter-spacing:var(--kokka-tracking-widest);
+             color:var(--kokka-brand-dark); margin:0 0 12px; }
+  h1 { font-family:var(--kokka-font-serif); font-weight:500; font-size:40px;
+       line-height:1.15; color:var(--kokka-brand-darker); margin:0 0 12px;
+       letter-spacing:var(--kokka-tracking-tight); }
+  .sub { color:var(--kokka-gray-500); font-size:15px; margin:0 0 32px;
+         max-width:var(--kokka-prose-narrow); }
+
+  .card { background:var(--kokka-white); border:1px solid var(--kokka-gray-200);
+          border-radius:var(--kokka-radius-lg); padding:24px; margin-bottom:20px;
+          box-shadow:var(--kokka-shadow-md); }
+
+  label { display:block; font-size:11px; font-weight:600; text-transform:uppercase;
+          letter-spacing:var(--kokka-tracking-wide); color:var(--kokka-gray-500);
+          margin-bottom:7px; }
+  input[type=text], input[type=number], select {
+    width:100%; padding:11px 12px; background:var(--kokka-white);
+    color:var(--kokka-brand-darker); border:1px solid var(--kokka-gray-300);
+    border-radius:var(--kokka-radius-md); font-size:14px; font-family:inherit;
+  }
+  input:focus, select:focus {
+    outline:none; border-color:var(--kokka-brand-mid);
+    box-shadow:0 0 0 3px rgb(var(--kokka-brand-mid-rgb) / 0.2);
+  }
+  ::placeholder { color:var(--kokka-gray-400); }
+  #url { font-size:16px; padding:14px; }
+
+  .row { display:flex; gap:14px; flex-wrap:wrap; }
+  .row > div { flex:1; min-width:130px; }
+  .mt { margin-top:16px; }
+
+  button {
+    font:inherit; font-weight:600; border:0; border-radius:var(--kokka-radius-md);
+    padding:13px 26px; cursor:pointer; color:var(--kokka-white);
+    background:var(--kokka-brand-dark); letter-spacing:var(--kokka-tracking-wide);
+  }
+  button:hover:not(:disabled) { background:var(--kokka-brand-darker); }
+  button:focus-visible { outline:2px solid var(--kokka-brand-mid); outline-offset:2px; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  button.ghost { background:var(--kokka-white); border:1px solid var(--kokka-gray-300);
+                 color:var(--kokka-brand-darker); }
+  button.ghost:hover:not(:disabled) { background:var(--kokka-gray-50);
+                 border-color:var(--kokka-brand-mid); }
+  .actions { display:flex; gap:10px; align-items:center; margin-top:20px; flex-wrap:wrap; }
+
+  details { margin-top:18px; border-top:1px solid var(--kokka-gray-200); padding-top:16px; }
+  summary { cursor:pointer; color:var(--kokka-brand-darker); font-size:13px;
+            font-weight:600; user-select:none; }
+  summary:hover { color:var(--kokka-brand-dark); }
+
+  .checks { display:flex; gap:18px; flex-wrap:wrap; margin-top:16px; }
+  .checks label { display:flex; align-items:center; gap:8px; text-transform:none;
+                  letter-spacing:0; font-size:13px; font-weight:400;
+                  color:var(--kokka-gray-700); margin:0; cursor:pointer; }
+  .checks input { accent-color:var(--kokka-brand-mid); width:16px; height:16px; }
+
+  #bar { height:6px; background:var(--kokka-gray-200);
+         border-radius:var(--kokka-radius-pill); overflow:hidden; margin:2px 0 14px; }
+  #fill { height:100%; width:0; background:var(--kokka-brand-mid);
+          transition:width .3s ease; }
+  #fill.done { background:var(--kokka-success); }
+  #status { font-size:13px; color:var(--kokka-gray-500); margin-bottom:12px; }
+  #log {
+    background:var(--kokka-gray-50); border:1px solid var(--kokka-gray-200);
+    border-radius:var(--kokka-radius-md); padding:14px; height:260px; overflow-y:auto;
+    font:12.5px/1.65 var(--kokka-font-mono); white-space:pre-wrap;
+    word-break:break-word; color:var(--kokka-gray-700);
+  }
+  #panel { display:none; }
+  .hint { color:var(--kokka-gray-500); font-size:12px; margin-top:10px; }
+  .foot { color:var(--kokka-gray-500); font-size:12px; margin:28px 0 0;
+          padding-top:18px; border-top:1px solid var(--kokka-gray-200); }
+</style>
+</head>
+<body>
+<header class="masthead"><div class="masthead-inner">__LOGO__</div></header>
+<div class="wrap">
+  <p class="eyebrow">Internal Tool</p>
+  <h1>YouTube to MP3</h1>
+  <p class="sub">Paste a playlist or video link. Each track is saved as a 320 kbps MP3
+     with artist, album, track number and cover art written into the file.</p>
+
+  <div class="card">
+    <label for="url">YouTube link</label>
+    <input id="url" type="text" placeholder="https://www.youtube.com/playlist?list=..." autofocus>
+
+    <div class="checks" style="margin-top:12px">
+      <label><input type="checkbox" id="single"> Just this one song — ignore any playlist in the link</label>
+    </div>
+
+    <div class="row mt">
+      <div style="flex:3">
+        <label for="output">Save to</label>
+        <input id="output" type="text" value="__OUTPUT__">
+      </div>
+      <div>
+        <label for="bitrate">Quality</label>
+        <select id="bitrate">
+          <option value="320" selected>320 kbps</option>
+          <option value="256">256 kbps</option>
+          <option value="192">192 kbps</option>
+          <option value="128">128 kbps</option>
+        </select>
+      </div>
+    </div>
+
+    <details>
+      <summary>More options</summary>
+      <div class="row mt">
+        <div><label for="album">Album</label><input id="album" type="text" placeholder="from playlist"></div>
+        <div><label for="artist">Artist</label><input id="artist" type="text" placeholder="auto-detect"></div>
+      </div>
+      <div class="row mt">
+        <div><label for="album_artist">Album artist</label><input id="album_artist" type="text" placeholder="auto"></div>
+        <div><label for="items">Tracks</label><input id="items" type="text" placeholder="all, or 1-10"></div>
+        <div><label for="jobs">At once</label><input id="jobs" type="number" value="3" min="1" max="8"></div>
+      </div>
+      <div class="mt">
+        <label for="cookies_from_browser">Sign-in cookies</label>
+        <select id="cookies_from_browser">__BROWSERS__</select>
+        <p class="hint">YouTube demands a signed-in session for some albums.
+           Auto borrows your browser's YouTube login only if that happens.</p>
+      </div>
+      <div class="checks">
+        <label><input type="checkbox" id="name_with_artist"> Artist in filename</label>
+        <label><input type="checkbox" id="flat"> No album folder</label>
+        <label><input type="checkbox" id="no_track_numbers"> No track numbers</label>
+        <label><input type="checkbox" id="keep_cover_file"> Save cover.jpg</label>
+        <label><input type="checkbox" id="no_crop_art"> Keep wide art</label>
+        <label><input type="checkbox" id="force"> Re-download</label>
+      </div>
+    </details>
+
+    <div class="actions">
+      <button id="go">Download</button>
+      <button id="stop" class="ghost" disabled>Stop</button>
+      <button id="open" class="ghost" disabled>Open folder</button>
+    </div>
+    <p class="hint">Already-downloaded tracks are skipped, so you can safely re-run the same link.</p>
+  </div>
+
+  <div class="card" id="panel">
+    <div id="bar"><div id="fill"></div></div>
+    <div id="status">Starting…</div>
+    <div id="log"></div>
+  </div>
+
+  <p class="foot">Kokka &amp; Company — internal tool. Runs locally on this machine;
+     nothing is sent to a server.</p>
+</div>
+
+<script>
+const TOKEN = "__TOKEN__";
+const $ = id => document.getElementById(id);
+const FIELDS = ["url","output","album","artist","album_artist","items","jobs","bitrate","cookies_from_browser"];
+const FLAGS  = ["single","flat","name_with_artist","keep_cover_file","no_crop_art","no_track_numbers","force"];
+let since = 0, timer = null, pollFails = 0;
+
+function api(path, body) {
+  // path may already carry a query string, so pick the right separator —
+  // "?a=1?token=x" would fold the token into the previous value.
+  const sep = path.includes("?") ? "&" : "?";
+  return fetch(path + sep + "token=" + TOKEN, {
+    method: body ? "POST" : "GET",
+    headers: {"Content-Type": "application/json"},
+    body: body ? JSON.stringify(body) : undefined,
+  }).then(r => {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  });
+}
+
+function setRunning(on) {
+  $("go").disabled = on;
+  $("stop").disabled = !on;
+  if (on) $("open").disabled = true;
+}
+
+function start() {
+  const cfg = {};
+  FIELDS.forEach(f => cfg[f] = $(f).value);
+  FLAGS.forEach(f => cfg[f] = $(f).checked);
+  if (!cfg.url.trim()) { $(  "url").focus(); return; }
+
+  $("log").textContent = "";
+  $("fill").style.width = "0%";
+  $("fill").classList.remove("done");
+  $("status").textContent = "Reading link…";
+  $("panel").style.display = "block";
+  since = 0;
+  setRunning(true);
+
+  api("/api/start", cfg).then(r => {
+    if (r.error) { $("status").textContent = r.error; setRunning(false); return; }
+    if (timer) clearInterval(timer);
+    timer = setInterval(poll, 600);
+  }).catch(e => { $("status").textContent = "Could not start: " + e; setRunning(false); });
+}
+
+function poll() {
+  api("/api/status?since=" + since).then(s => {
+    since = s.next;
+    if (s.lines.length) {
+      const log = $("log");
+      log.textContent += s.lines.join("\n") + "\n";
+      log.scrollTop = log.scrollHeight;
+    }
+    if (s.total) {
+      $("fill").style.width = Math.round(100 * s.done / s.total) + "%";
+      $("status").textContent = s.running
+        ? `${s.done} of ${s.total} tracks`
+        : `${s.summary} — ${s.done} of ${s.total} tracks`;
+    } else if (!s.running && s.finished) {
+      $("status").textContent = s.summary || "Finished";
+    }
+    if (!s.running && s.finished) {
+      clearInterval(timer); timer = null;
+      setRunning(false);
+      // Only go green on a clean finish — a stopped run shouldn't look complete.
+      if (s.summary === "Finished") {
+        $("fill").classList.add("done");
+        if (!s.total) $("fill").style.width = "100%";
+      }
+      $("open").disabled = !s.outdir;
+    }
+    pollFails = 0;
+  }).catch(e => {
+    // Never fail silently: a broken poll used to leave the panel frozen while
+    // the download ran on invisibly behind it.
+    if (++pollFails >= 3) {
+      $("status").textContent = "Lost contact with the downloader — it may still "
+        + "be running. Check the terminal window. (" + e + ")";
+    }
+  });
+}
+
+$("go").onclick = start;
+$("stop").onclick = () => { $("status").textContent = "Stopping…"; api("/api/cancel", {}); };
+$("open").onclick = () => api("/api/open", {});
+$("url").addEventListener("keydown", e => { if (e.key === "Enter") start(); });
+</script>
+</body>
+</html>
