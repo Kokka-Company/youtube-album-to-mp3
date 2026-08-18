@@ -179,12 +179,14 @@ file that is already correct is left alone rather than re-encoded.
 | `-a` | Name the file `Artist - Title.mp3` rather than `Title.mp3` |
 | `-s N` | Use an edge length other than 640 |
 | `-e` | Upscale art smaller than the target instead of leaving it be |
+| `-A` | Fix the cover art only, leaving the filename alone |
 
 Several files at once is fine: `python3 mechenformat.py ~/Music/*.mp3`.
 
 > It names files from the **title tag alone**, so running it across an album
 > folder strips the `01 - ` prefixes and loses the running order in the
-> filenames. It is meant for singles; leave album folders to `ytmp3.py`.
+> filenames. It is meant for singles — use `-A` on album folders, which fixes
+> the artwork and leaves the names untouched.
 
 ## Branding
 

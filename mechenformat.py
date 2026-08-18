@@ -164,6 +164,12 @@ def process(path, args):
         # ID3v2.3 has the widest player support (Windows, car head units, phones).
         id3.save(str(path), v2_version=3)
 
+    if args.art_only:
+        print(f"{'would fix' if args.dry_run else 'ok'}  {path.name}")
+        for line in report:
+            print(f"      {line}")
+        return True
+
     wanted = target_name(id3, path, args)
     dest = path.with_name(wanted)
     if dest == path:
@@ -195,6 +201,9 @@ def parse_args(argv):
                         "leaving it at its own size")
     p.add_argument("-a", "--with-artist", action="store_true",
                    help='Name the file "Artist - Title.mp3" instead of "Title.mp3"')
+    p.add_argument("-A", "--art-only", action="store_true",
+                   help="Only fix the cover art — leave the filename alone. Use "
+                        "this on album folders, where the NN- prefix matters")
     p.add_argument("-n", "--dry-run", action="store_true",
                    help="Show what would change without writing anything")
     return p.parse_args(argv)
