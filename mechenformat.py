@@ -31,7 +31,7 @@ except ImportError:
     sys.exit("Could not find ytmp3.py — run mechenformat.py from the same folder.")
 
 try:
-    from mutagen.id3 import ID3, ID3NoHeaderError, APIC
+    from mutagen.id3 import ID3, ID3NoHeaderError, APIC, TALB, TPE1, TPE2, TRCK, TDRC
 except ImportError:
     sys.exit("mutagen is not installed. Run: pip3 install --user -r requirements.txt")
 
@@ -130,6 +130,39 @@ def rewrite_cover(id3, args, report):
         return True
 
 
+ALBUM_FRAMES = {"TALB": TALB, "TPE1": TPE1, "TPE2": TPE2, "TRCK": TRCK, "TDRC": TDRC}
+
+
+def album_tags(id3, path, args, index, total, report):
+    """Apply the album-wide tags. True if anything changed."""
+    wanted = {}
+    if args.album:
+        wanted["TALB"] = args.album
+    if args.artist:
+        wanted["TPE1"] = args.artist
+    if args.album_artist:
+        wanted["TPE2"] = args.album_artist
+    if args.year:
+        wanted["TDRC"] = args.year
+    if args.album:
+        # Track number comes from the NN- prefix when the file has one, so a
+        # folder that is already ordered keeps its order.
+        stem = path.name[:2]
+        n = int(stem) if stem.isdigit() else index
+        wanted["TRCK"] = f"{n}/{total}"
+
+    changed = False
+    for key, value in wanted.items():
+        cur = id3.getall(key)
+        cur = str(cur[0].text[0]) if cur else None
+        if cur != value:
+            report.append(f"{key}: {cur!r} -> {value!r}")
+            if not args.dry_run:
+                id3.setall(key, [ALBUM_FRAMES[key](encoding=3, text=value)])
+            changed = True
+    return changed
+
+
 def target_name(id3, path, args):
     """The filename this track should have, based on its title tag."""
     title = read_title(id3, path)
@@ -140,7 +173,7 @@ def target_name(id3, path, args):
     return sanitize_filename(title) + path.suffix.lower()
 
 
-def process(path, args):
+def process(path, args, index=1, total=1):
     path = Path(path)
     if not path.is_file():
         print(f"skip  {path}: not a file")
@@ -159,12 +192,13 @@ def process(path, args):
 
     report = []
     changed = rewrite_cover(id3, args, report)
+    changed |= album_tags(id3, path, args, index, total, report)
 
     if changed and not args.dry_run:
         # ID3v2.3 has the widest player support (Windows, car head units, phones).
         id3.save(str(path), v2_version=3)
 
-    if args.art_only:
+    if args.art_only or args.album:
         print(f"{'would fix' if args.dry_run else 'ok'}  {path.name}")
         for line in report:
             print(f"      {line}")
@@ -204,6 +238,12 @@ def parse_args(argv):
     p.add_argument("-A", "--art-only", action="store_true",
                    help="Only fix the cover art — leave the filename alone. Use "
                         "this on album folders, where the NN- prefix matters")
+    p.add_argument("--album", metavar="NAME",
+                   help="Treat the files as one album: set the album tag, "
+                        "renumber tracks as n/total, and leave filenames alone")
+    p.add_argument("--album-artist", metavar="NAME", help="Set the album artist tag")
+    p.add_argument("--artist", metavar="NAME", help="Set the artist tag on every file")
+    p.add_argument("--year", metavar="YYYY", help="Set the year tag on every file")
     p.add_argument("-n", "--dry-run", action="store_true",
                    help="Show what would change without writing anything")
     return p.parse_args(argv)
@@ -214,7 +254,8 @@ def main(argv=None):
     if not find_ffmpeg():
         sys.exit("ffmpeg not found on PATH. Install it: sudo apt install ffmpeg\n"
                  "(or point FFMPEG_PATH at the binary)")
-    done = sum(process(f, args) for f in args.files)
+    total = len(args.files)
+    done = sum(process(f, args, i, total) for i, f in enumerate(args.files, 1))
     print(f"\n{done} of {len(args.files)} file(s) processed"
           f"{' (dry run — nothing written)' if args.dry_run else ''}.")
 

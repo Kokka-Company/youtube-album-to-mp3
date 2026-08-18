@@ -180,6 +180,8 @@ file that is already correct is left alone rather than re-encoded.
 | `-s N` | Use an edge length other than 640 |
 | `-e` | Upscale art smaller than the target instead of leaving it be |
 | `-A` | Fix the cover art only, leaving the filename alone |
+| `--album NAME` | Treat the files as one album — set the album tag, renumber `n/total`, keep filenames |
+| `--album-artist`, `--artist`, `--year` | Set those tags across every file given |
 
 Several files at once is fine: `python3 mechenformat.py ~/Music/*.mp3`.
 
