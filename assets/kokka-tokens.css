@@ -27,6 +27,25 @@
   --kokka-success-bg: #DCFCE7;
   --kokka-error: #EF4444;
 
+  /* roles — prefer these over the primitives above */
+  --kokka-ink-heading: #365669;
+  --kokka-ink-body: #374151;
+  --kokka-ink-muted: #6B7280;
+  --kokka-ink-accent: #588DAD;
+  --kokka-ink-on-dark: #FFFFFF;
+  --kokka-ink-muted-on-dark: rgb(255 255 255 / 0.6);
+  --kokka-ink-accent-on-dark: #81CCFB;
+  --kokka-surface-page: #FFFFFF;
+  --kokka-surface-sunken: #F9FAFB;
+  --kokka-surface-raised: #FFFFFF;
+  --kokka-surface-inverse: #1E2F3A;
+  --kokka-line-subtle: #E5E7EB;
+  --kokka-line-interactive: #588DAD;
+  --kokka-line-on-dark: rgb(255 255 255 / 0.1);
+  --kokka-action-default: #588DAD;
+  --kokka-action-hover: #365669;
+  --kokka-action-hover-on-dark: #81CCFB;
+
   /* typography */
   --kokka-font-serif: 'Playfair Display', Georgia, serif;
   --kokka-font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -34,6 +53,61 @@
   --kokka-tracking-tight: 0.025em;
   --kokka-tracking-wide: 0.05em;
   --kokka-tracking-widest: 0.1em;
+  --kokka-text-xs: 0.75rem;
+  --kokka-text-xs-lh: 1rem;
+  --kokka-text-sm: 0.875rem;
+  --kokka-text-sm-lh: 1.25rem;
+  --kokka-text-base: 1rem;
+  --kokka-text-base-lh: 1.5rem;
+  --kokka-text-lg: 1.125rem;
+  --kokka-text-lg-lh: 1.75rem;
+  --kokka-text-xl: 1.25rem;
+  --kokka-text-xl-lh: 1.75rem;
+  --kokka-text-2xl: 1.5rem;
+  --kokka-text-2xl-lh: 2rem;
+  --kokka-text-3xl: 1.875rem;
+  --kokka-text-3xl-lh: 2.25rem;
+  --kokka-text-4xl: 2.25rem;
+  --kokka-text-4xl-lh: 2.5rem;
+  --kokka-text-5xl: 3rem;
+  --kokka-text-5xl-lh: 1;
+  --kokka-text-6xl: 3.75rem;
+  --kokka-text-6xl-lh: 1;
+  --kokka-text-7xl: 4.5rem;
+  --kokka-text-7xl-lh: 1;
+  --kokka-leading-tight: 1.25;
+  --kokka-leading-snug: 1.375;
+  --kokka-leading-relaxed: 1.625;
+  --kokka-weight-normal: 400;
+  --kokka-weight-medium: 500;
+  --kokka-weight-semibold: 600;
+  --kokka-weight-bold: 700;
+
+  /* spacing */
+  --kokka-space-1: 0.25rem;
+  --kokka-space-2: 0.5rem;
+  --kokka-space-3: 0.75rem;
+  --kokka-space-4: 1rem;
+  --kokka-space-5: 1.25rem;
+  --kokka-space-6: 1.5rem;
+  --kokka-space-7: 1.75rem;
+  --kokka-space-8: 2rem;
+  --kokka-space-10: 2.5rem;
+  --kokka-space-12: 3rem;
+  --kokka-space-14: 3.5rem;
+  --kokka-space-16: 4rem;
+  --kokka-space-20: 5rem;
+  --kokka-space-24: 6rem;
+  --kokka-space-28: 7rem;
+  --kokka-section-y: 5rem;
+  --kokka-section-y-large: 6rem;
+  --kokka-section-y-large-lg: 7rem;
+  --kokka-gutter: 1.5rem;
+  --kokka-gutter-lg: 2rem;
+  --kokka-eyebrow-gap: 1rem;
+  --kokka-heading-gap: 1.5rem;
+  --kokka-card-padding: 1.5rem;
+  --kokka-card-padding-lg: 2rem;
 
   /* radius */
   --kokka-radius-sm: 0.25rem;
@@ -42,18 +116,36 @@
   --kokka-radius-xl: 1rem;
   --kokka-radius-pill: 9999px;
 
+  /* border */
+  --kokka-border-width: 1px;
+
   /* shadow */
   --kokka-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --kokka-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --kokka-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* state */
+  --kokka-focus-width: 2px;
+  --kokka-focus-color: #588DAD;
+  --kokka-focus-ring: 0 0 0 2px #588DAD;
+  --kokka-disabled-opacity: 0.3;
+  --kokka-duration: 0.15s;
+  --kokka-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --kokka-transition: color var(--kokka-duration) var(--kokka-ease), background-color var(--kokka-duration) var(--kokka-ease), border-color var(--kokka-duration) var(--kokka-ease), text-decoration-color var(--kokka-duration) var(--kokka-ease), fill var(--kokka-duration) var(--kokka-ease), stroke var(--kokka-duration) var(--kokka-ease);
 
   /* layout */
   --kokka-container: 80rem;
   --kokka-prose-narrow: 42rem;
   --kokka-prose-default: 48rem;
   --kokka-prose-wide: 56rem;
+  --kokka-screen-md: 768px;
+  --kokka-screen-lg: 1024px;
 
   /* effect */
   --kokka-image-scrim: linear-gradient(to top, #1E2F3A 0%, rgb(30 47 58 / 0.6) 50%, rgb(30 47 58 / 0.2) 100%);
+  --kokka-scrim-bottom-up-strong: linear-gradient(to top, #1E2F3A 0%, rgb(30 47 58 / 0.5) 50%, transparent 100%);
+  --kokka-scrim-bottom-up-soft: linear-gradient(to top, rgb(30 47 58 / 0.8) 0%, rgb(30 47 58 / 0.2) 50%, transparent 100%);
+  --kokka-scrim-left-to-right: linear-gradient(to right, rgb(30 47 58 / 0.8) 0%, rgb(30 47 58 / 0.4) 50%, transparent 100%);
+  --kokka-scrim-subtle: linear-gradient(to top, rgb(30 47 58 / 0.4) 0%, transparent 100%);
   --kokka-backdrop-blur: blur(4px);
 }

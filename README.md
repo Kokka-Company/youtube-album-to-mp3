@@ -1,10 +1,29 @@
-# YouTube Playlist → MP3 Scraper
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/lockup-compact-white.svg">
+    <img src="assets/lockup-compact-darker.svg" alt="Kokka & Company" width="240">
+  </picture>
+</p>
+
+<h1 align="center">YouTube Playlist → MP3</h1>
+
+<p align="center">
+  <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-365669"></a>
+  <img alt="Python 3.9+" src="https://img.shields.io/badge/python-3.9%2B-365669">
+  <a href="https://github.com/Kokka-Company/youtube-album-to-mp3/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Kokka-Company/youtube-album-to-mp3/actions/workflows/ci.yml/badge.svg"></a>
+</p>
 
 Downloads a YouTube playlist (or a single video) as MP3 files with full ID3 tags
 and square album art embedded — the same output shape as ytdlp.online's playlist
 downloader, but local, scriptable and resumable.
 
-Runs on **Python 3**. Kokka & Company branded.
+Runs on **Python 3**. Open source under the MIT License, maintained by
+[Kokka & Company](https://kokkaco.com).
+
+> **Use it responsibly.** Only download content you have the right to: your own
+> uploads, Creative Commons material, or where the rights holder permits it.
+> Downloading may breach YouTube's Terms of Service, and you are responsible for
+> how you use this tool. See [Legal](#legal).
 
 ## What you get
 
@@ -36,6 +55,8 @@ Runs on **Python 3**. Kokka & Company branded.
 Requires **Python 3.9+** and `ffmpeg`.
 
 ```bash
+git clone https://github.com/Kokka-Company/youtube-album-to-mp3.git
+cd youtube-album-to-mp3
 pip3 install --user -r requirements.txt   # yt-dlp + mutagen
 sudo apt install ffmpeg                   # if you don't have it
 ```
@@ -156,7 +177,8 @@ line. A profile path also works: `--cookies-from-browser firefox:/path/to/profil
 | `gui.py` | Local web server for the GUI |
 | `mechenformat.py` | Tidy an existing MP3 for a hardware player |
 | `ui.html` | The GUI page (Kokka-branded markup) |
-| `assets/` | Brand tokens, logo, favicon |
+| `assets/` | Brand tokens, logos, favicon (trademarked — see `TRADEMARKS.md`) |
+| `docs/` | Branded user guide (.docx and .pdf) |
 | `requirements.txt` | yt-dlp + mutagen |
 
 ## Fixing up a file you already have
@@ -192,21 +214,31 @@ Several files at once is fine: `python3 mechenformat.py ~/Music/*.mp3`.
 
 ## Branding
 
-The GUI follows the Kokka & Company brand spec. Assets in `assets/` are copied
-from the `@kokka-company/design` package (`~/Documents/kokka-design`) — the
-token stylesheet, the horizontal lockup, and the optically-corrected favicon.
-They are inlined into the page at serve time, so the tool has no runtime
-dependency on the design repo, and falls back to a built-in palette if
-`assets/` goes missing.
+The GUI follows the Kokka & Company brand spec. The files in `assets/` are
+copied from Kokka & Company's design system, `@kokka-company/design` (a private
+package). [`assets/SOURCE.txt`](./assets/SOURCE.txt) lists each one and the
+version it came from. They are inlined into the page at serve time, so the tool
+has no runtime dependency on the design system. If `assets/` goes missing it
+falls back to a built-in palette.
 
-To pick up a new version of the design system, re-copy the three files:
+The brand files are **not** covered by the MIT License. If you distribute a
+fork, replace them; see [TRADEMARKS.md](./TRADEMARKS.md).
+
+Maintainers with access to the design package update by re-copying the files
+listed in `SOURCE.txt`:
 
 ```bash
-SRC=~/Documents/kokka-design
+SRC=path/to/kokka-design
 cp $SRC/tokens/tokens.css                     assets/kokka-tokens.css
 cp $SRC/logos/svg/lockup-horizontal-white.svg assets/
+cp $SRC/logos/svg/lockup-compact-darker.svg   assets/
+cp $SRC/logos/svg/lockup-compact-white.svg    assets/
 cp $SRC/logos/favicon/favicon.ico             assets/
+cp $SRC/logos/social/og-image.png             assets/social-preview.png
 ```
+
+A printable, branded user guide is in [`docs/`](./docs/). It is generated with
+the design system's `kokka` document CLI, not written by hand.
 
 ## Notes
 
@@ -230,3 +262,27 @@ cp $SRC/logos/favicon/favicon.ico             assets/
 | `failed to load cookies` | The browser isn't installed, or its profile is locked — close the browser first, or export a `cookies.txt` and use `--cookies` |
 | `Sign in to confirm you're not a bot` | Handled automatically; if it persists, sign in to YouTube in your browser first |
 | Art not showing in a player | Some players cache art; re-import the file |
+
+## Contributing
+
+Bug reports and pull requests are welcome. Read [CONTRIBUTING.md](./CONTRIBUTING.md)
+first. Report security issues privately as described in [SECURITY.md](./SECURITY.md).
+Everyone taking part follows the [Code of Conduct](./CODE_OF_CONDUCT.md).
+
+## Legal
+
+This project is not affiliated with, endorsed by or sponsored by YouTube or
+Google. It downloads only what YouTube serves to a normal viewer and does not
+circumvent DRM. You are responsible for complying with copyright law and with
+YouTube's Terms of Service in your jurisdiction.
+
+## License
+
+The code is released under the [MIT License](./LICENSE), © 2026 Kokka & Company.
+The Kokka & Company name and logos are trademarks and are not covered by the
+license; see [TRADEMARKS.md](./TRADEMARKS.md).
+
+It depends on [yt-dlp](https://github.com/yt-dlp/yt-dlp) (Unlicense),
+[mutagen](https://github.com/quodlibet/mutagen) (GPL-2.0-or-later) and
+[FFmpeg](https://ffmpeg.org/) (LGPL/GPL). None of them are bundled. Each is
+installed separately under its own license.

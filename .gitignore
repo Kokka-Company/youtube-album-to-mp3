@@ -1,5 +1,26 @@
-node_modules/
+# Python
 __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Output — never commit downloaded audio
+downloads/
+*.mp3
+*.m4a
+*.webm
+*.opus
+*.part
+*.ytdl
+
+# Session credentials
+cookies.txt
+*cookies*.txt
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Leftovers from the retired Node.js version
+node_modules/

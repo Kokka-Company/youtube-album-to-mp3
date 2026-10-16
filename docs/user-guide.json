@@ -1,0 +1,64 @@
+{
+  "eyebrow": "Open-source tool \u00b7 User guide",
+  "title": "YouTube Playlist to MP3",
+  "standfirst": "Download a YouTube playlist or a single video as 320 kbps MP3s with full ID3 tags and square cover art. It runs locally, it can be scripted, and an interrupted run picks up where it left off. Released under the MIT License.",
+  "sections": [
+    {
+      "heading": "What you get",
+      "body": "MP3 at 320 kbps, or 96 to 256 kbps for a smaller file. The video thumbnail is centre-cropped to a square and embedded as the front cover. Tags: title, artist, album, album artist, track number n/total, year and genre, with the source URL in the comment. Each MP3 records its source URL, so a re-run skips tracks already in the folder and re-downloads any you deleted. Downloads run in parallel, and a failed track is retried across four formats before it is skipped."
+    },
+    {
+      "heading": "Setup",
+      "body": "Requires Python 3.9 or later and ffmpeg. Clone github.com/Kokka-Company/youtube-album-to-mp3, then run: pip3 install --user -r requirements.txt. Install ffmpeg with your package manager (for example sudo apt install ffmpeg), or set FFMPEG_PATH to a specific build."
+    },
+    {
+      "heading": "The GUI",
+      "body": "Run python3 gui.py. A browser tab opens: paste the link and press Download. Stop, Open folder and every command-line option are available in the page. The server listens on 127.0.0.1 only, behind a one-time token, so nothing is exposed to your network. Press Ctrl+C in the terminal to close it."
+    },
+    {
+      "heading": "The command line",
+      "body": "python3 ytmp3.py \"<playlist-url>\" saves to downloads/<Album Name>/01 - Song.mp3. Useful options: -o for the output folder, -b for the bitrate, -j for parallel jobs, --single for one song from a link that also carries a playlist, --album and --artist to override tags, --items 1-5 to download part of a playlist, and --cookies-from-browser firefox for age-restricted or private playlists."
+    },
+    {
+      "heading": "Fixing an existing file",
+      "body": "python3 mechenformat.py \"file.mp3\" renames the file after its ID3 title and rewrites the cover as a square JPEG of at most 640x640, which is what hardware players such as the MECHEN expect. Use -n for a dry run. Use -A on album folders: it fixes the art and leaves the filenames, and so the track order, alone."
+    },
+    {
+      "heading": "Sign-in and 403 errors",
+      "body": "YouTube often requires a signed-in session, especially for auto-generated album playlists. When a download hits that wall, the tool finds an installed browser and retries with its YouTube cookies. You must be signed in to YouTube in that browser. If YouTube changes something and downloads break, run pip3 install --user -U yt-dlp first; that fixes most breakage."
+    }
+  ],
+  "callout": "Only download content you have the right to: your own uploads, Creative Commons material, or where the rights holder permits it. You are responsible for complying with copyright law and YouTube's Terms of Service.",
+  "table": [
+    {
+      "a": "Problem",
+      "b": "Cause",
+      "c": "Fix"
+    },
+    {
+      "a": "yt-dlp is not installed",
+      "b": "Missing dependency",
+      "c": "pip3 install --user -r requirements.txt"
+    },
+    {
+      "a": "ffmpeg not found",
+      "b": "Not on PATH",
+      "c": "Install ffmpeg, or set FFMPEG_PATH"
+    },
+    {
+      "a": "403 Forbidden",
+      "b": "Anonymous download refused",
+      "c": "Automatic cookie retry, or --cookies-from-browser"
+    },
+    {
+      "a": "Not a bot sign-in wall",
+      "b": "Session required",
+      "c": "Sign in to YouTube in your browser"
+    },
+    {
+      "a": "Extractor errors",
+      "b": "YouTube changed",
+      "c": "pip3 install --user -U yt-dlp"
+    }
+  ]
+}

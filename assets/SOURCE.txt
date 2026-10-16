@@ -1,3 +1,11 @@
-Brand assets copied from @kokka-company/design v1.0.0
-Source: /home/donwassa/Documents/kokka-design
+Brand assets copied from @kokka-company/design v1.6.2
+  tokens/tokens.css                      -> kokka-tokens.css
+  logos/svg/lockup-horizontal-white.svg  -> lockup-horizontal-white.svg
+  logos/svg/lockup-compact-darker.svg    -> lockup-compact-darker.svg
+  logos/svg/lockup-compact-white.svg     -> lockup-compact-white.svg
+  logos/favicon/favicon.ico              -> favicon.ico
+  logos/social/og-image.png              -> social-preview.png
 Do not edit — re-copy from the design package to update.
+
+These files are trademarks of Kokka & Company and are NOT covered by the
+MIT license that applies to the source code. See TRADEMARKS.md.
