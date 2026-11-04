@@ -13,5 +13,10 @@ kokka validate docs/User-Guide.docx
 soffice --headless --convert-to pdf --outdir docs docs/User-Guide.docx
 ```
 
+The `general` template prints a placeholder "Column" header row above the
+table. The first row of `table` in `user-guide.json` (Problem / Cause / Fix) is
+the real header: after regenerating, move it into the header row of the
+`.docx` before converting to PDF.
+
 The Kokka & Company logo and letterhead in these files are trademarks and are
 not covered by the GNU GPL. See [../TRADEMARKS.md](../TRADEMARKS.md).
