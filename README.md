@@ -8,7 +8,7 @@
 <h1 align="center">YouTube Playlist → MP3</h1>
 
 <p align="center">
-  <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-365669"></a>
+  <a href="./LICENSE"><img alt="License: GPL v3" src="https://img.shields.io/badge/license-GPL--3.0-365669"></a>
   <img alt="Python 3.9+" src="https://img.shields.io/badge/python-3.9%2B-365669">
   <a href="https://github.com/Kokka-Company/youtube-album-to-mp3/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Kokka-Company/youtube-album-to-mp3/actions/workflows/ci.yml/badge.svg"></a>
 </p>
@@ -17,7 +17,7 @@ Downloads a YouTube playlist (or a single video) as MP3 files with full ID3 tags
 and square album art embedded — the same output shape as ytdlp.online's playlist
 downloader, but local, scriptable and resumable.
 
-Runs on **Python 3**. Open source under the MIT License, maintained by
+Runs on **Python 3**. Open source under the GNU GPL v3 (or later), maintained by
 [Kokka & Company](https://kokkaco.com).
 
 > **Use it responsibly.** Only download content you have the right to: your own
@@ -221,7 +221,7 @@ version it came from. They are inlined into the page at serve time, so the tool
 has no runtime dependency on the design system. If `assets/` goes missing it
 falls back to a built-in palette.
 
-The brand files are **not** covered by the MIT License. If you distribute a
+The brand files are **not** covered by the GNU GPL. If you distribute a
 fork, replace them; see [TRADEMARKS.md](./TRADEMARKS.md).
 
 Maintainers with access to the design package update by re-copying the files
@@ -278,7 +278,14 @@ YouTube's Terms of Service in your jurisdiction.
 
 ## License
 
-The code is released under the [MIT License](./LICENSE), © 2026 Kokka & Company.
+Copyright (C) 2026 Kokka & Company
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the [GNU General Public License](LICENSE) for more details.
+
+Versions up to and including commit `bd30503` were released under the MIT License.
+
 The Kokka & Company name and logos are trademarks and are not covered by the
 license; see [TRADEMARKS.md](./TRADEMARKS.md).
 

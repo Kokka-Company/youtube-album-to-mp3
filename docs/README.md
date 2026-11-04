@@ -14,4 +14,4 @@ soffice --headless --convert-to pdf --outdir docs docs/User-Guide.docx
 ```
 
 The Kokka & Company logo and letterhead in these files are trademarks and are
-not covered by the MIT License. See [../TRADEMARKS.md](../TRADEMARKS.md).
+not covered by the GNU GPL. See [../TRADEMARKS.md](../TRADEMARKS.md).

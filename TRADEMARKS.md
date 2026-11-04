@@ -1,12 +1,12 @@
 # Trademarks
 
-The source code in this repository is released under the [MIT License](./LICENSE).
+The source code in this repository is released under the [GNU General Public License v3 or later](./LICENSE).
 The license does **not** extend to the Kokka & Company name, the K mark, the
 lockups, or the other brand files in [`assets/`](./assets/).
 
 ## What you can do
 
-- Use, modify and redistribute the code under the MIT License.
+- Use, modify and redistribute the code under the GNU GPL v3 (or later).
 - Refer to the project by name to say where your copy came from
   ("based on youtube-album-to-mp3 by Kokka & Company").
 

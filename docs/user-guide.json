@@ -1,7 +1,7 @@
 {
   "eyebrow": "Open-source tool \u00b7 User guide",
   "title": "YouTube Playlist to MP3",
-  "standfirst": "Download a YouTube playlist or a single video as 320 kbps MP3s with full ID3 tags and square cover art. It runs locally, it can be scripted, and an interrupted run picks up where it left off. Released under the MIT License.",
+  "standfirst": "Download a YouTube playlist or a single video as 320 kbps MP3s with full ID3 tags and square cover art. It runs locally, it can be scripted, and an interrupted run picks up where it left off. Released under the GNU GPL v3 (or later).",
   "sections": [
     {
       "heading": "What you get",

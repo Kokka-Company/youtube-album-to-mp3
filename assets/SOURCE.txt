@@ -8,4 +8,4 @@ Brand assets copied from @kokka-company/design v1.6.2
 Do not edit — re-copy from the design package to update.
 
 These files are trademarks of Kokka & Company and are NOT covered by the
-MIT license that applies to the source code. See TRADEMARKS.md.
+GNU GPL that applies to the source code. See TRADEMARKS.md.

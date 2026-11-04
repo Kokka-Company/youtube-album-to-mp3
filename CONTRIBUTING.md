@@ -50,5 +50,5 @@ Make one change per pull request, and explain why in the description. Update
 `README.md` when you change a flag or a behaviour.
 
 By contributing you agree that your work is licensed under the
-[MIT License](./LICENSE), and that you will follow the
+[GNU General Public License v3 or later](./LICENSE), and that you will follow the
 [Code of Conduct](./CODE_OF_CONDUCT.md).
